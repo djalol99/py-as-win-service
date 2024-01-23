@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <button class="js-start">Start</button>
+        <button class="js-resume">Resume</button>
+        <button class="js-end">End</button>
+    </div>
+    <script>
+        let ws;
+        
+        ws = new WebSocket("ws://localhost:7001");
+            
+        ws.onopen = () => console.log("opened connection");
+        ws.onclose = () => console.log("closed connection");
+        ws.onerror = (error) => console.error(`ERROR: ${error}`);
+        ws.onmessage = (event) => {
+            console.log(event.data);
+            ws.send(JSON.stringify({
+                cmd: "get"
+            }));
+        }
+
+        function start() {
+            ws.send(JSON.stringify({
+                cmd: "start",
+                comport: "COM8"
+            }))
+        }
+
+        function resume() {
+            ws.send(JSON.stringify({
+                cmd: "resume"
+            }))
+        }
+
+        function end() {
+            ws.send(JSON.stringify({
+                cmd: "stop"
+            }))
+        }
+        
+        document.querySelector(".js-start").addEventListener("click", start);
+        document.querySelector(".js-resume").addEventListener("click", resume);
+        document.querySelector(".js-end").addEventListener("click", end);
+
+    </script>
+</body>
+</html>

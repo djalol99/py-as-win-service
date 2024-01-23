@@ -12,7 +12,8 @@ PORT = 8000
 app = FastAPI()
 
 origins = [
-    '*'
+    'localhost',
+    '127.0.0.1'
 ]
 
 app.add_middleware(
